@@ -9,14 +9,13 @@ function mergeValues(values, content){
 	return content
 }
 
-function view(templetName, values, response){
+function view(templateName, values, response){
 	//read from template files
 	var fileContents = fs.readFileSync('./views/'+templateName+'.html', {encoding: 'utf8'})
 	//insert values into html content
 	fileContents = mergeValues(values, fileContents)
 	response.write(fileContents);
-	})
-}
+	}
 
 
 
