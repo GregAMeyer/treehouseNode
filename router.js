@@ -1,15 +1,24 @@
 var Profile = require('./profile.js');
 var renderer = require('./renderer.js');
+var querystring = require('querystring')
 
 var commonHeader = {'Content-Type': 'text/html'};
 
 function home(request, response){
 	if(request.url === '/'){
+		if(request.method.toLowerCase() === 'get')
 		response.writeHead(200, commonHeader);
 		renderer.view('header', {}, response);
 		renderer.view('search', {}, response);
 		renderer.view('footer', {}, response);
 		response.end();
+	}
+	else {
+		request.on("data", function(postData){
+			var formQuery = querystring.parse(postData.toString());
+			response.writeHead(303, {"Location": "/"+formQuery});
+			response.end();
+		})
 	}
 }
 function user(request, response){
