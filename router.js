@@ -1,12 +1,12 @@
 var Profile = require('./profile.js');
 var renderer = require('./renderer.js');
-var querystring = require('querystring')
+var querystring = require('querystring');
 
 var commonHeader = {'Content-Type': 'text/html'};
 
 function home(request, response){
 	if(request.url === '/'){
-		if(request.method.toLowerCase() === 'get')
+		if(request.method.toLowerCase() === 'get'){
 		response.writeHead(200, commonHeader);
 		renderer.view('header', {}, response);
 		renderer.view('search', {}, response);
@@ -14,12 +14,13 @@ function home(request, response){
 		response.end();
 	}
 	else {
-		request.on("data", function(postData){
-			var formQuery = querystring.parse(postData.toString());
-			response.writeHead(303, {"Location": "/"+formQuery});
-			response.end();
-		})
-	}
+		request.on("data", function(postBody) {
+	        var query = querystring.parse(postBody.toString());
+	        response.writeHead(303, {"Location": "/"+query.username});
+	        response.end();
+        });  
+    }    
+    }
 }
 function user(request, response){
 	var username = request.url.replace("/", "");
